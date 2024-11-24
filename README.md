@@ -18,7 +18,7 @@ Building is done using the ArduinoIDE. Make sure you have added the board manage
 Most RTL8720dn devboards have the upload and log serial ports isolated. Make sure to bridge **LOG_UART_TX** and **LP_UART_TX**, as well as **LOG_UART_RX** and **LP_UART_RX** during uploading.
 ## Using RTL8720dn-Deauther
 The RTL8720dn hosts a WiFi network with the name of `RTL8720dn-Deauther` and a password of `0123456789`. Connect to this network and type the IP of your RTL8720dn (typically **192.168.1.1**) into a webbrowser of a choice.
-### Rescan networks:
+### Rescan networks
 Rescan and detect all WiFi networks in your area. After a successful scan, the networks are listed in the above table.
 ### Launch Deauth-Attack
 Deauthenticates all clients connected to one or multiple networks. Select the networks you want to deauth in the table above, and enter a reason code in the reason field (2 works best in most cases) from the table below. After that, click **Launch Deauth-Attack**
