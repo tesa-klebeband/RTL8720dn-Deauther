@@ -3,8 +3,8 @@
 ![GitHub License](https://img.shields.io/github/license/tesa-klebeband/RTL8720dn-Deauther)
 ![GitHub Repo stars](https://img.shields.io/github/stars/tesa-klebeband/RTL8720dn-Deauther?style=flat)
 ![GitHub forks](https://img.shields.io/github/forks/tesa-klebeband/RTL8720dn-Deauther?style=flat)
+[<img src="https://api.gitsponsors.com/api/badge/img?id=841135446" height="20">](https://api.gitsponsors.com/api/badge/link?p=4CY9DKNgTGT8LqGbdS3NNLzRsojPnLlNIsPoWBKAkdF9/Qd0VZJ09dSMJbswQPnjn3sayioiBvbL5flk5AFZCpzlp2NY0DUhCQmCXYYUaE29WEaCuX5gfJ7Xkhec+5cI)
 ![logo](https://github.com/user-attachments/assets/ab8ebf84-eee2-4298-8975-2e8dad13c1b3)
-
 
 My ESP32-Deauther ported to the RTL8720dn, allowing users to deauthenticate on 5Ghz now!
 # DISCLAIMER
