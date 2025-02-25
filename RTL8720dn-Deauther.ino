@@ -340,8 +340,8 @@ void loop() {
   
   uint32_t current_num = 0;
   while (deauth_wifis.size() > 0) {
-    memcpy(deauth_bssid, scan_results[current_num].bssid, 6);
-    wext_set_channel(WLAN0_NAME, scan_results[current_num].channel);
+    memcpy(deauth_bssid, scan_results[deauth_wifis[current_num]].bssid, 6);
+    wext_set_channel(WLAN0_NAME, scan_results[deauth_wifis[current_num]].channel);
     current_num++;
     if (current_num >= deauth_wifis.size()) current_num = 0;
     digitalWrite(LED_B, HIGH);
