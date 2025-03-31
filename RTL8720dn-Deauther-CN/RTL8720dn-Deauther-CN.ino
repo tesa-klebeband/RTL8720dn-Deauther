@@ -369,7 +369,7 @@ void setup() {
 // ---------------------------------------------------------------------
 void loop() {
   WiFiClient client = server.available();
-  if (client) {
+  if (client.connected()) {
     if (led) {
       digitalWrite(LED_G, HIGH);
     }
