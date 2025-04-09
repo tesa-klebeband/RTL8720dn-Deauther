@@ -228,7 +228,7 @@ void handleRoot(WiFiClient &client) {
   response += R"(
         </table>
           <p>Reason code:</p>
-          <input type="text" name="reason" placeholder="Reason code">
+          <input type="text" name="reason" value="2">
           <input type="submit" value="Launch Attack">
       </form>
 
