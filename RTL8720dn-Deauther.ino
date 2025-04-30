@@ -142,172 +142,435 @@ void handleRoot(WiFiClient &client) {
   <!DOCTYPE html>
   <html lang="en">
   <head>
-      <meta charset="UTF-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>RTL8720dn-Deauther</title>
-      <style>
-          body {
-              font-family: Arial, sans-serif;
-              line-height: 1.6;
-              color: #333;
-              max-width: 800px;
-              margin: 0 auto;
-              padding: 20px;
-              background-color: #f4f4f4;
-          } 
-          h1, h2 {
-              color: #2c3e50;
-          }
-          table {
-              width: 100%;
-              border-collapse: collapse;
-              margin-bottom: 20px;
-          }
-          th, td {
-              padding: 12px;
-              text-align: left;
-              border-bottom: 1px solid #ddd;
-          }
-          th {
-              background-color: #3498db;
-              color: white;
-          }
-          tr:nth-child(even) {
-              background-color: #f2f2f2;
-          }
-          form {
-              background-color: white;
-              padding: 20px;
-              border-radius: 5px;
-              box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-              margin-bottom: 20px;
-          }
-          input[type="submit"] {
-              padding: 10px 20px;
-              border: none;
-              background-color: #3498db;
-              color: white;
-              border-radius: 4px;
-              cursor: pointer;
-              transition: background-color 0.3s;
-          }
-          input[type="submit"]:hover {
-              background-color: #2980b9;
-          }
-      </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=0.8, minimal-ui">
+    <meta name="theme-color" content="#36393E">
+    <title>RTL8720dn-Deauther</title>
+    <style>
+    /* Base on Spacehuhn css file. Copyright (c) 2020 Spacehuhn Technologies: https://github.com/spacehuhntech/esp8266_deauther */
+      body {
+        background: #36393e;
+        color: #bfbfbf;
+        font-family: sans-serif;
+      }
+
+      h3{
+        background: #2f3136;
+        color: #bfbfbb;
+        padding: .2em 1em;
+        border-radius: 3px;
+        // border-left: solid #20c20e 5px;
+        font-weight: 100;
+        text-align: center;
+        width: 50%;
+      }
+
+      .centered{
+        display: flex;
+        justify-content: center;
+      }
+      h1 {
+        font-size: 1.7rem;
+        margin-top: 1rem;
+        background: #2f3136;
+        color: #bfbfbb;
+        padding: .2em 1em;
+        border-radius: 3px;
+        border-left: solid #20c20e 5px;
+        border-right: solid #20c20e 5px;
+        font-weight: 100;
+        text-align: center;
+      }
+
+      h2 {
+        font-size: 1.1rem;
+        margin-top: 1rem;
+        background: #2f3136;
+        color: #bfbfbb;
+        padding: .4em 1em;
+        border-radius: 3px;
+        border-left: solid #20c20e 5px;
+        font-weight: 100;
+      }
+
+      table {
+        border-collapse: collapse;
+        width: 100%;
+        min-width: auto;
+        margin-bottom: 2em;
+      }
+
+      td {
+        word-break: keep-all;
+        // padding: 10px 6px;
+        text-align: left;
+        border-bottom: 1px solid #5d5d5d;
+      }
+      
+      .tdMeter {
+        word-break: break-all;
+        // padding: 10px 6px;
+        padding-right: 10px;
+        text-align: left;
+        border-bottom: 1px solid #5d5d5d;
+      }
+
+      .tdFixed{
+        word-break: keep-all;
+        padding: 10px 6px;
+        text-align: center;
+        border-bottom: 1px solid #5d5d5d;
+      }
+
+      th {
+          word-break: break-word;
+          // padding: 10px 6px;
+          text-align: left;
+          border-bottom: 1px solid #5d5d5d;
+      }
+
+      p {
+        margin: .5em 0;
+      }
+      .bold {
+        font-weight: bold;
+      }
+
+      .right {
+        display: flex;
+        flex-direction: row-reverse;
+      }
+
+      .container {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+      }
+
+      .checkBoxContainer {
+        display: block;
+        position: relative;
+        padding-left: 25px;
+        margin-bottom: 12px;
+        cursor: pointer;
+        font-size: 22px;
+        user-select: none;
+        height: 32px;
+      }
+
+      .checkBoxContainer input {
+        position: absolute;
+        opacity: 0;
+        cursor: pointer;
+      }
+
+      .checkmark {
+        position: absolute;
+        top: 8px;
+        left: 0;
+        height: 28px;
+        width: 28px;
+        background-color: #2F3136;
+        border-radius: 4px;
+      }
+
+      .checkmark:after {
+        content: "";
+        position: absolute;
+        display: none;
+      }
+
+      .checkBoxContainer input:checked ~ .checkmark:after {
+        display: block;
+      }
+
+      .checkBoxContainer .checkmark:after {
+        left: 10px;
+        top: 7px;
+        width: 4px;
+        height: 10px;
+        border: solid white;
+        border-width: 0 3px 3px 0;
+        transform: rotate(45deg);
+      }
+              /* Meter */
+      .meter_background{
+        background: #42464D;
+        // width: 100%;
+        word-break: normal;
+        // min-width: 100px;
+        // min-width: 45px;
+      }
+      .meter_forground{
+        color: #fff;
+        padding: 4px 0;
+        /* + one of the colors below
+        (width will be set by the JS) */
+      }
+      .meter_green{
+        background: #43B581;
+      }
+      .meter_orange{
+        background: #FAA61A;
+      }
+      .meter_red{
+        background: #F04747;
+      }
+      .meter_value{
+        padding-left: 8px;
+      }
+
+      @keyframes fadeIn {
+        0% {
+            opacity: 0;
+        }
+        100% {
+            opacity: 1;
+        }
+      }
+
+      hr {
+        background: #3e4146;
+      }
+      
+      .button-container {
+        display: flex; /* Usar flexbox */
+        justify-content: start; /* Espacio entre los botones */
+        align-items: center; /* Centra los elementos horizontalmente */
+        align-content: center;
+        column-gap: 15px;
+      }
+
+      .button-double{
+        display: flex; /* Usar flexbox */
+        flex-direction: column;
+        justify-content: start; /* Espacio entre los botones */
+        align-items: center; /* Centra los elementos horizontalmente */
+        align-content: center;
+        row-gap: 15px;
+      }
+
+      .upload-script,
+      .button,
+      button,
+      input[type=submit],
+      input[type=reset],
+      input[type=button] {
+        display: inline-block;
+        height: 38px;
+        // padding: 0 20px;
+        color: #fff;
+        text-align: center;
+        font-size: 11px;
+        font-weight: 600;
+        line-height: 38px;
+        letter-spacing: .1rem;
+        text-transform: uppercase;
+        text-decoration: none;
+        white-space: nowrap;
+        background: #2f3136;
+        border-radius: 4px;
+        border: 0;
+        cursor: pointer;
+        box-sizing: border-box;
+      }
+
+      button:hover,
+      input[type=submit]:hover,
+      input[type=reset]:hover,
+      input[type=button]:hover {
+        background: #42444a;
+      }
+
+      button:active,
+      input[type=submit]:active,
+      input[type=reset]:active,
+      input[type=button]:active {
+        transform: scale(.93);
+      }
+
+      button:disabled:hover,
+      input[type=submit]:disabled:hover,
+      input[type=reset]:disabled:hover,
+      input[type=button]:disabled:hover {
+        background: white;
+        cursor: not-allowed;
+        opacity: .40;
+        filter: alpha(opacity=40);
+        transform: scale(1);
+      }
+
+      button::-moz-focus-inner {
+        border: 0;
+      }
+
+      input[type=email],
+      input[type=number],
+      input[type=search],
+      input[type=text],
+      input[type=tel],
+      input[type=url],
+      input[type=password],
+      textarea,
+      select {
+        text-align: center;
+        height: 38px;
+        padding: 0 5px;
+      }
+
+      .shortInput{
+        width: 28px;
+      }
+
+      .longInput{
+        width: 138px;
+      }
+    </style>
   </head>
   <body>
-      <h1>RTL8720dn-Deauther</h1>
-
-      <h2>WiFi Networks</h2>
+  <div class="container">
+    <h1 class="bold">RTL8720dn-Deauther</h1>
+      <div class="right">
+        <div class="button-container">
+          <form method="post" action="/rescan">
+              <input type="submit" value="Rescan Network">
+          </form>
+          <form method="post" action="/refresh">
+              <input type="submit" value="Refresh page">
+          </form>
+        </div>
+      </div>
       <form method="post" action="/deauth">
-          <table>
-              <tr>
-                  <th>Select</th>
-                  <th>Number</th>
-                  <th>SSID</th>
-                  <th>BSSID</th>
-                  <th>Channel</th>
-                  <th>RSSI</th>
-                  <th>Frequency</th>
-              </tr>
+      <h2>Access Points: )" + String(scan_results.size()) + R"(</h2>
+      <div class="centered">
+        <h3 class="bold">5 GHz networks</h3>  
+      </div>
+        <table>
+          <tr>
+            <th>SSID</th>
+            <th class='tdFixed'>CH</th>
+            <th>BSSID</th>
+            <th>RSSI</th>
+            <th class='tdFixed'></th>
+            <th class='selectColumn'></th>
+          </tr>
   )";
 
   for (uint32_t i = 0; i < scan_results.size(); i++) {
-    response += "<tr>";
-    response += "<td><input type='checkbox' name='network' value='" + String(i) + "'></td>";
-    response += "<td>" + String(i) + "</td>";
-    response += "<td>" + scan_results[i].ssid + "</td>";
-    response += "<td>" + scan_results[i].bssid_str + "</td>";
-    response += "<td>" + String(scan_results[i].channel) + "</td>";
-    response += "<td>" + String(scan_results[i].rssi) + "</td>";
-    response += "<td>" + (String)((scan_results[i].channel >= 36) ? "5GHz" : "2.4GHz") + "</td>";
-    response += "</tr>";
-  }
+    if (scan_results[i].channel >= 36) {
+      String color = "";
+      int width = scan_results[i].rssi + 120;
+      int colorWidth = scan_results[i].rssi + 130;
 
+      if (colorWidth < 50) color = "meter_red";
+      else if (colorWidth < 70) color = "meter_orange";
+      else color = "meter_green";
+
+      response += "<tr>";
+      response += "<td>" + String((scan_results[i].ssid.length() > 0) ? scan_results[i].ssid : "**HIDDEN**") + "</td>";
+      response += "<td class='tdFixed'>" + String(scan_results[i].channel) + "</td>";
+      response += "<td>" + scan_results[i].bssid_str + "</td>";
+      response += "<td class='tdMeter'><div class='meter_background'> <div class='meter_forground " + String(color) + "' style='width: " + String(width) + "%'><div class='meter_value'>" + String(scan_results[i].rssi) + "</div></div></div></td>";
+      // response += "<td class='tdFixed'>" + String((scan_results[i].channel >= 36) ? "5G" : "") + "</td>";
+      response += "<td><label class='checkBoxContainer'><input type='checkbox' name='network' value='" + String(i) + "'><span class='checkmark'></span></label></td>";
+      response += "</tr>";
+    }
+  }
   response += R"(
         </table>
-          <p>Reason code:</p>
-          <input type="text" name="reason" value="2">
-          <input type="submit" value="Launch Attack">
-      </form>
-
-      <h2>Dashboard</h2>
-    <table>
-      <tr><th>Name</th><th>Value</th></tr>
+        <div class="centered">
+          <h3 class="bold">2.4 GHz networks</h3>  
+        </div>
+          <table>
+            <tr>
+              <th>SSID</th>
+              <th class='tdFixed'>CH</th>
+              <th>BSSID</th>
+              <th>RSSI</th>
+              <th class='tdFixed'></th>
+              <th class='selectColumn'></th>
+            </tr>
   )";
 
-  response += "<tr><td>Attack Status</td><td>" + String(isDeauthing ? "Running" : "Stop") + "</th></tr>";
-  response += "<tr><td>LED Switch</td><td>" + String(led ? "ON" : "OFF") + "</th></tr>";
-  response += "<tr><td>Sent Frames</td><td>" + String(sent_frames) + "</th></tr>";
-  response += "<tr><td>Send Delay</td><td>" + String(send_delay) + "</th></tr>";
-  response += "<tr><td>Frames Per Deauth</td><td>" + String(frames_per_deauth) + "</th></tr>";
+  for (uint32_t i = 0; i < scan_results.size(); i++) {
+    if (scan_results[i].channel <= 14) {
+      String color = "";
+      int width = scan_results[i].rssi + 120;
+      int colorWidth = scan_results[i].rssi + 130;
 
+      if (colorWidth < 50) color = "meter_red";
+      else if (colorWidth < 70) color = "meter_orange";
+      else color = "meter_green";
+      
+      response += "<tr>";
+      response += "<td>" + String((scan_results[i].ssid.length() > 0) ? scan_results[i].ssid : "**HIDDEN**") + "</td>";
+      response += "<td class='tdFixed'>" + String(scan_results[i].channel) + "</td>";
+      response += "<td>" + scan_results[i].bssid_str + "</td>";
+      response += "<td class='tdMeter'><div class='meter_background'> <div class='meter_forground " + String(color) + "' style='width: " + String(width) + "%'><div class='meter_value'>" + String(scan_results[i].rssi) + "</div></div></div></td>";
+      // response += "<td class='tdFixed'>" + String((scan_results[i].channel >= 36) ? "5G" : "") + "</td>";
+      response += "<td><label class='checkBoxContainer'><input type='checkbox' name='network' value='" + String(i) + "'><span class='checkmark'></span></label></td>";
+      response += "</tr>";
+    }
+  }
   response += R"(
-    </table>
-      <h2>Control Panel</h2>
-      <form method="post" action="/setframes">
-          <input type="text" name="frames" placeholder="Frames per deauth">
-          <input type="submit" value="Set frames per deauth">
+        </table>
+          <h2>Reason Code</h2>
+            <div class="right">
+              <div class="button-container">
+                <input class="shortInput" type="text" name="reason" placeholder="Enter code" value="1">
+                <input type="submit" value="Attack!!!">  
+              </div>
+            </div>
       </form>
-
-      <form method="post" action="/setdelay">
-          <input type="text" name="delay" placeholder="Send delay">
-          <input type="submit" value="Set send delay">
-      </form>
-
-      <form method="post" action="/rescan">
-          <input type="submit" value="Rescan networks">
-      </form>
-
-      <form method="post" action="/stop">
-          <input type="submit" value="Stop Attack">
-      </form>
-
-      <form method="post" action="/led_enable">
-          <input type="submit" value="LED enable">
-      </form>
-
-      <form method="post" action="/led_disable">
-          <input type="submit" value="LED disable">
-      </form>
-
-      <form method="post" action="/refresh">
-          <input type="submit" value="Refresh page">
-      </form>
-
-      <h2>Reason Codes</h2>
+      <div class="right">
+        <form method="post" action="/stop">
+          <div class="button-container">
+            <input type="submit" value="Stop">
+          </div>
+        </form>
+      </div>
+      <h2>Dashboard</h2>
     <table>
-        <tr>
-            <th>Code</th>
-            <th>Meaning</th>
-        </tr>
-        <tr><td>0</td><td>Reserved.</td></tr>
-        <tr><td>1</td><td>Unspecified reason.</td></tr>
-        <tr><td>2</td><td>Previous authentication no longer valid.</td></tr>
-        <tr><td>3</td><td>Deauthenticated because sending station (STA) is leaving or has left Independent Basic Service Set (IBSS) or ESS.</td></tr>
-        <tr><td>4</td><td>Disassociated due to inactivity.</td></tr>
-        <tr><td>5</td><td>Disassociated because WAP device is unable to handle all currently associated STAs.</td></tr>
-        <tr><td>6</td><td>Class 2 frame received from nonauthenticated STA.</td></tr>
-        <tr><td>7</td><td>Class 3 frame received from nonassociated STA.</td></tr>
-        <tr><td>8</td><td>Disassociated because sending STA is leaving or has left Basic Service Set (BSS).</td></tr>
-        <tr><td>9</td><td>STA requesting (re)association is not authenticated with responding STA.</td></tr>
-        <tr><td>10</td><td>Disassociated because the information in the Power Capability element is unacceptable.</td></tr>
-        <tr><td>11</td><td>Disassociated because the information in the Supported Channels element is unacceptable.</td></tr>
-        <tr><td>12</td><td>Disassociated due to BSS Transition Management.</td></tr>
-        <tr><td>13</td><td>Invalid element, that is, an element defined in this standard for which the content does not meet the specifications in Clause 8.</td></tr>
-        <tr><td>14</td><td>Message integrity code (MIC) failure.</td></tr>
-        <tr><td>15</td><td>4-Way Handshake timeout.</td></tr>
-        <tr><td>16</td><td>Group Key Handshake timeout.</td></tr>
-        <tr><td>17</td><td>Element in 4-Way Handshake different from (Re)Association Request/ Probe Response/Beacon frame.</td></tr>
-        <tr><td>18</td><td>Invalid group cipher.</td></tr>
-        <tr><td>19</td><td>Invalid pairwise cipher.</td></tr>
-        <tr><td>20</td><td>Invalid AKMP.</td></tr>
-        <tr><td>21</td><td>Unsupported RSNE version.</td></tr>
-        <tr><td>22</td><td>Invalid RSNE capabilities.</td></tr>
-        <tr><td>23</td><td>IEEE 802.1X authentication failed.</td></tr>
-        <tr><td>24</td><td>Cipher suite rejected because of the security policy.</td></tr>
-    </table>
+      <tr><th>State</th><th>Current Value</th></tr>
+  )";
+  response += "<tr><td>Status Attack</td><td>" + String(isDeauthing ? "Running" : "Stoped") + "</th></tr>";
+  response += "<tr><td>LED Enabled</td><td>" + String(led ? "Yes" : "No") + "</th></tr>";
+  response += "<tr><td>Frame Sent</td><td>" + String(sent_frames) + "</th></tr>";
+  response += "<tr><td>Send Delay</td><td>" + String(send_delay) + "</th></tr>";
+  response += "<tr><td>Number of frames send each time</td><td>" + String(frames_per_deauth) + "</th></tr>";
+  response += "</table>";
+  response += R"(
+    <h2>Setup</h2>
+      <div class="right">
+        <div class="button-double">
+          <form method="post" action="/setframes">
+            <div class="button-container">
+              <input class="longInput" type="text" name="frames" placeholder="Number of frames">
+              <input type="submit" value="Set frames">
+            </div>
+          </form>
+
+          <form method="post" action="/setdelay">
+            <div class="button-container">
+              <input class="longInput" type="text" name="delay" placeholder="Send frames delay">
+              <input type="submit" value="Set delay  ">
+            </div>
+          </form>
+        </div>
+      </div>
+    <h2>LED Options</h2>
+      <div class="right">
+        <div class="button-container">
+          <form method="post" action="/led_enable">
+              <input class="green" type="submit" value="Turn on LED">
+          </form>
+
+          <form method="post" action="/led_disable">
+              <input class="red" type="submit" value="Turn off LED">
+          </form>
+        </div>
+      </div>
+  </div>
   </body>
   </html>
   )";
