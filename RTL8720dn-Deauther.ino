@@ -25,6 +25,9 @@ typedef struct {
 char *ssid = "RTL8720dn-Deauther";
 char *pass = "0123456789";
 
+// 1 = Hide SSID, 0 = Broadcast SSID
+int hidden = 1;
+
 int current_channel = 1;
 std::vector<WiFiScanResult> scan_results;
 std::map<int, std::vector<int>> deauth_channels;
@@ -327,7 +330,7 @@ void setup() {
   pinMode(LED_B, OUTPUT);
 
   DEBUG_SER_INIT();
-  WiFi.apbegin(ssid, pass, (char *)String(current_channel).c_str());
+  WiFi.apbegin(ssid, pass, (char *)String(current_channel).c_str(), hidden);
 
   scanNetworks();
 
