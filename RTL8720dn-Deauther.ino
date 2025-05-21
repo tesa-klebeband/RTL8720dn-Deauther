@@ -471,7 +471,6 @@ void handleRoot(WiFiClient &client) {
       response += "<td class='tdFixed'>" + String(scan_results[i].channel) + "</td>";
       response += "<td>" + scan_results[i].bssid_str + "</td>";
       response += "<td class='tdMeter'><div class='meter_background'> <div class='meter_forground " + String(color) + "' style='width: " + String(width) + "%'><div class='meter_value'>" + String(scan_results[i].rssi) + "</div></div></div></td>";
-      // response += "<td class='tdFixed'>" + String((scan_results[i].channel >= 36) ? "5G" : "") + "</td>";
       response += "<td><label class='checkBoxContainer'><input type='checkbox' name='network' value='" + String(i) + "'><span class='checkmark'></span></label></td>";
       response += "</tr>";
     }
@@ -507,18 +506,15 @@ void handleRoot(WiFiClient &client) {
       response += "<td class='tdFixed'>" + String(scan_results[i].channel) + "</td>";
       response += "<td>" + scan_results[i].bssid_str + "</td>";
       response += "<td class='tdMeter'><div class='meter_background'> <div class='meter_forground " + String(color) + "' style='width: " + String(width) + "%'><div class='meter_value'>" + String(scan_results[i].rssi) + "</div></div></div></td>";
-      // response += "<td class='tdFixed'>" + String((scan_results[i].channel >= 36) ? "5G" : "") + "</td>";
       response += "<td><label class='checkBoxContainer'><input type='checkbox' name='network' value='" + String(i) + "'><span class='checkmark'></span></label></td>";
       response += "</tr>";
     }
   }
   response += R"(
         </table>
-          <h2>Reason Code</h2>
             <div class="right">
               <div class="button-container">
-                <input class="shortInput" type="text" name="reason" placeholder="Enter code" value="1">
-                <input type="submit" value="Attack!!!">  
+                <input type="submit" value="Start Attack!">  
               </div>
             </div>
       </form>
@@ -533,7 +529,7 @@ void handleRoot(WiFiClient &client) {
     <table>
       <tr><th>State</th><th>Current Value</th></tr>
   )";
-  response += "<tr><td>Status Attack</td><td>" + String(isDeauthing ? "Running" : "Stoped") + "</th></tr>";
+  response += "<tr><td>Status Attack</td><td>" + String(isDeauthing ? "Running" : "Stopped") + "</th></tr>";
   response += "<tr><td>LED Enabled</td><td>" + String(led ? "Yes" : "No") + "</th></tr>";
   response += "<tr><td>Frame Sent</td><td>" + String(sent_frames) + "</th></tr>";
   response += "<tr><td>Send Delay</td><td>" + String(send_delay) + "</th></tr>";

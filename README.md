@@ -20,9 +20,9 @@ The RTL8720dn hosts a WiFi network with the name of `RTL8720dn-Deauther` and a p
 ### Rescan networks
 Rescan and detect all WiFi networks in your area. After a successful scan, the networks are listed in the above table.
 ### Launch Deauth-Attack
-Deauthenticates all clients connected to one or multiple networks. Select the networks you want to deauth in the table above, and enter a reason code in the reason field (2 works best in most cases) from the table below. After that, click **Launch Deauth-Attack**
+Deauthenticates all clients connected to one or multiple networks. Select the networks you want to deauth in the table above and click **Start Attack!**.
 ### Stopping a Deauth-Attack
-Unlike in previous versions, stopping a deauth requires you to reset the board. This can be done by pressing the reset button on the board or by unplugging and replugging the board. It is not possible to implement a button on the website, as the board is constantly switching channels.
+To stop an ongoing attack, hit the **Stop** button.
 ### Leds
 The RTL8720dn-Deauther utilizes the RGB led that most devboards have. This is what the different colors indicate:
 * Red: The system state. Lights up when the system is usable.
