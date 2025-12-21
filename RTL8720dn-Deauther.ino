@@ -1,3 +1,4 @@
+#undef max
 #include "vector"
 #include "wifi_conf.h"
 #include "map"
@@ -8,6 +9,9 @@
 #include "WiFi.h"
 #include "WiFiServer.h"
 #include "WiFiClient.h"
+
+void handleRoot(WiFiClient &client);
+void handle404(WiFiClient &client);
 
 // LEDs:
 //  Red: System usable, Web server active etc.
