@@ -10,7 +10,7 @@ My ESP32-Deauther ported to the RTL8720dn, allowing users to deauthenticate on 5
 This tool has been made for educational and testing purposes only. Any misuse or illegal activities conducted with the tool are strictly prohibited. I am **not** responsible for any consequences arising from the use of the tool, which is done at your own risk.
 ## Building
 Building is done using the ArduinoIDE. Make sure you have added the board manager URL for Realtek MCUs and installed them in the board manager.
-1) Clone this repo using `git clone https://github.com/tesa-klebeband/RTL8720dn-Deauther.git`
+1) Clone this repo using `git clone --recurse-submodules https://github.com/tesa-klebeband/RTL8720dn-Deauther.git`
 2) Open the cloned folder in the Arduino IDE
 3) Connect your board and hit upload
 ### Notes
