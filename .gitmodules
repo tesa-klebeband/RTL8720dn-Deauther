@@ -1,0 +1,3 @@
+[submodule "src/packet-injection"]
+	path = src/packet-injection
+	url = https://github.com/tesa-klebeband/RTL8720dn-WiFi-Packet-Injection.git
