@@ -9,7 +9,7 @@
 */
 void wifi_tx_raw_frame(void* frame, size_t length) {
   uint8_t *ptr = (uint8_t *)**(uint32_t **)(rltk_wlan_info + 0x10);
-  uint8_t *frame_control = (uint8_t *)alloc_mgtxmitframe(ptr + 0xae0);
+  uint8_t *frame_control = (uint8_t *)alloc_mgtxmitframe(ptr + 0xa80);
 
   if (frame_control != 0) {
     update_mgntframe_attrib(ptr, frame_control + 8);
