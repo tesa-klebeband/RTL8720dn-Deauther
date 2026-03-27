@@ -76,6 +76,21 @@ int scanNetworks() {
   }
 }
 
+void rescan() {
+  wifi_off();
+  delay(200);
+  wifi_set_country(RTW_COUNTRY_IN);
+  delay(100);
+
+  scanNetworks();
+
+  wifi_on(RTW_MODE_AP);
+  delay(200);
+  char ch_str[4];
+  sprintf(ch_str, "%d", current_channel);
+  WiFi.apbegin(ssid, pass, ch_str);
+}
+
 String parseRequest(String request) {
   int path_start = request.indexOf(' ');
   if (path_start < 0) return "/";
@@ -590,27 +605,22 @@ void setup() {
   pinMode(LED_B, OUTPUT);
 
   DEBUG_SER_INIT();
-  WiFi.apbegin(ssid, pass, (char *)String(current_channel).c_str());
 
+  WiFi.status();
+  delay(100);
+
+  wifi_set_country(RTW_COUNTRY_IN); // My CC is IN (India) use your CC
+
+  // Scan BEFORE starting AP — matches working script's radio state
   scanNetworks();
 
-#ifdef DEBUG
-  for (uint i = 0; i < scan_results.size(); i++) {
-    DEBUG_SER_PRINT(scan_results[i].ssid + " ");
-    for (int j = 0; j < 6; j++) {
-      if (j > 0) DEBUG_SER_PRINT(":");
-      DEBUG_SER_PRINT(scan_results[i].bssid[j], HEX);
-    }
-    DEBUG_SER_PRINT(" " + String(scan_results[i].channel) + " ");
-    DEBUG_SER_PRINT(String(scan_results[i].rssi) + "\n");
-  }
-#endif
+  // Start AP after scan is complete
+  char ch_str[4];
+  sprintf(ch_str, "%d", current_channel);
+  WiFi.apbegin(ssid, pass, ch_str);
 
   server.begin();
-
-  if (led) {
-    digitalWrite(LED_R, HIGH);
-  }
+  if (led) digitalWrite(LED_R, HIGH);
 }
 
 void loop() {
@@ -631,7 +641,7 @@ void loop() {
       handleRoot(client);
     } else if (path == "/rescan") {
       client.write(makeRedirect("/").c_str());
-      scanNetworks();
+      rescan(); // not scanNetworks()
     } else if (path == "/deauth") {
       std::vector<std::pair<String, String>> post_data = parsePost(request);
       deauth_channels.clear();
@@ -689,7 +699,6 @@ void loop() {
       handle404(client);
     }
 
-    client.stop();
     if (led) {
       digitalWrite(LED_G, LOW);
     }
